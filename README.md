@@ -46,7 +46,7 @@ ideas that were tried and rejected, and why.
 
 ## Quickstart
 
-Requires Python 3.11. Inference is CPU-only and takes about 13 minutes for the 4,797 test rows.
+Requires Python 3.11. Everything runs on CPU.
 
 ```powershell
 py -3.11 -m venv .venv
@@ -57,20 +57,35 @@ python -m pip install torch==2.12.1 --index-url https://download.pytorch.org/whl
 python -m pip install -r requirements-xlmr.txt
 ```
 
-Then add the two things that are not in this repository:
+### Try the model on your own text (no dataset needed)
 
-1. **Data** — place `train.csv` and `test.csv` in `data/` (see [`data/README.md`](data/README.md)).
-2. **Model weights** — place the transformer checkpoints in `models/` (see [`models/README.md`](models/README.md)).
+The competition dataset is no longer publicly available, but the trained model is. Run this from
+the repository root:
 
-Run from the repository root (all paths are relative to the working directory):
+```powershell
+python src/demo.py                                  # five built-in example messages
+python src/demo.py "the brakes do not work"         # your own messages
+python src/demo.py --tag Brakes "pedal is loose"    # with an optional part tag
+```
+
+The demo runs the primary blend (the TAPT transformer plus the linear model) and prints the
+predicted department with the probability of each class. The transformer (~2.2 GB) is downloaded
+from the Hugging Face Hub on first use and cached, unless it is already in `models/`.
+
+### Reproduce the submissions (needs the original data)
+
+This requires `train.csv` and `test.csv` in `data/` (see [`data/README.md`](data/README.md)) and
+the transformer checkpoints in `models/` (see [`models/README.md`](models/README.md)). Inference
+takes about 13 minutes for the 4,797 test rows.
 
 ```powershell
 python src/predict_blend_tapt_lr2e5.py    # primary submission
 python src/predict_blend_tapt.py          # secondary submission
 ```
 
-To retrain the linear model (about 9 seconds): `python src/train_linear.py`. The transformers
-were trained on Google Colab (L4 GPU); see the notebooks and per-model docs.
+All paths are relative to the working directory, so run from the repository root. To retrain
+the linear model (about 9 seconds): `python src/train_linear.py`. The transformers were trained
+on Google Colab (L4 GPU); see the notebooks and per-model docs.
 
 ## Repository layout
 
@@ -86,12 +101,13 @@ docs/                        one document per model or blend (index in docs/READ
 models/                      linear_model.joblib (tracked); transformer weights are downloaded
 artifacts/oof_predictions/   out-of-fold predictions used to tune the blend weight
 submissions/                 the two generated submission CSVs
-data/                        empty — add the competition files here
+data/                        empty — the competition data is not redistributed (see data/README.md)
 ```
 
 | Path | Purpose |
 |---|---|
 | `src/linear_model.py`, `src/train_linear.py` | Linear pipeline definition and training with 5-fold CV |
+| `src/demo.py` | Classify your own messages with the primary blend; no dataset needed |
 | `src/predict_blend_tapt_lr2e5.py` | Primary inference script |
 | `src/predict_blend_tapt.py` | Secondary inference script |
 | `notebooks/xlmrlarge_tapt_colab.ipynb` | TAPT (MLM + 5-fold fine-tune), lr=1e-5 |
@@ -111,7 +127,9 @@ The full check against the rulebook is in [`docs/competition_compliance.md`](doc
 
 ## Data
 
-The competition dataset belongs to Apar and is not redistributed here. The OOF prediction
+The competition dataset belongs to Apar and is not redistributed here. The competition has
+ended and the dataset is no longer publicly available, so the submissions cannot be regenerated
+without a copy of it. The OOF prediction
 files contain only row ids, labels and model scores, and the submission files contain only ids
 and predicted labels.
 

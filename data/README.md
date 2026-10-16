@@ -1,7 +1,10 @@
 # Data
 
-The competition dataset is **not included** in this repository and must not be committed
-(it is excluded by `.gitignore`). Obtain it from the competition page and place the files here:
+The competition dataset belongs to Apar. It is **not included** in this repository and must not
+be committed (it is excluded by `.gitignore`). The competition has ended and the dataset is no
+longer publicly available, so the training and submission scripts cannot be re-run as-is. The
+format the scripts expect is documented below, so you can run them on your own data with the
+same columns. If you have a legitimate copy, place the files here:
 
 ```
 data/
