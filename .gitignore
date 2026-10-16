@@ -1,0 +1,32 @@
+# --- Competition data (never redistributed) ---
+data/*
+!data/README.md
+!data/.gitkeep
+*.xlsx
+
+# --- Model weights (too large for git; see models/README.md) ---
+models/*/
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+!models/linear_model.joblib
+
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.env
+
+# --- Jupyter ---
+.ipynb_checkpoints/
+
+# --- Editors / OS ---
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db

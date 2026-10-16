@@ -1,0 +1,12 @@
+# Additional dependencies for the TAPT XLM-R-large models' local CPU inference
+# (src/predict_blend_tapt.py, src/predict_blend_tapt_lr2e5.py).
+# Install after requirements.txt. torch must be installed from the CPU wheel index to avoid pulling
+# an unnecessary CUDA build on a machine with no GPU / no CUDA toolkit:
+#
+#   pip install torch==2.12.1 --index-url https://download.pytorch.org/whl/cpu
+#   pip install -r requirements-xlmr.txt
+#
+# transformers is pinned to match the exact version used to fine-tune and save the models on
+# Google Colab (see docs/xlmrlarge_tapt_model.md, docs/xlmrlarge_tapt_lr2e5_model.md), to avoid
+# any checkpoint-loading incompatibilities across major transformers versions.
+transformers==5.12.1
